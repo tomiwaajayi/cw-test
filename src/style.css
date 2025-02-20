@@ -1,0 +1,58 @@
+:root {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+body {
+  min-height: 100vh;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.blue-text {
+  color: #0c254e;
+}
+
+.gray-text {
+  color: #708196;
+}
+
+.sm-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.md-text {
+  font-size: 16px;
+  font-weight: 600;
+}
+
