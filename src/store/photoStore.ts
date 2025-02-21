@@ -12,7 +12,7 @@ export const usePhotoStore = () => {
   const fetchPhotos = async (query = '') => {
     isLoading.value = true;
     try {
-      const response = query
+      const response = query.trim()
         ? await unsplashApi.get('/search/photos', {
             params: { query, per_page: 8 },
           })

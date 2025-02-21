@@ -2,7 +2,7 @@
   <div id="app">
     <div class="header">
       <SearchBar @search="searchPhotos" />
-      <p v-if="isLoading" class="search-status blue-text">
+      <p v-if="isLoading && currentSearchQuery.trim()" class="search-status blue-text">
         Searching for <span class="gray-text">"{{ currentSearchQuery }}"</span>
       </p>
       <p v-else-if="currentSearchQuery && photos.length > 0" class="search-status blue-text">
@@ -46,8 +46,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-
-
 .header {
   background-color: #DCE3EB;
   height: 250px;
@@ -64,7 +62,13 @@ onMounted(() => {
   font-size: 32px;
   font-weight: 500;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 }
-
-
 </style>

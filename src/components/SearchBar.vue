@@ -19,7 +19,7 @@
       </svg>
       <input 
         type="text" 
-        v-model="query" 
+        v-model.trim="query" 
         @input="debouncedSearch"
         @keyup.enter="handleEnterSearch" 
         placeholder="Search for photo"
