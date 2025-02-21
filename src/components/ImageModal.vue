@@ -23,6 +23,16 @@
             </div>
           </div>
         </Transition>
+        <!--  nav indicators for mobile -->
+        <div class="indicators">
+          <button 
+            v-for="(_, index) in photos" 
+            :key="index"
+            class="indicator"
+            :class="{ active: index === currentIndex }"
+            @click.stop="goToSlide(index)"
+          ></button>
+        </div>
       </div>
     </div>
   </Transition>
@@ -118,6 +128,11 @@ const handleKeydown = (e: KeyboardEvent) => {
   } else if (e.key === 'Escape') {
     closeModal();
   }
+};
+
+const goToSlide = (index: number) => {
+  slideDirection.value = index > currentIndex.value ? 'right' : 'left';
+  emit('change', props.photos[index]);
 };
 
 onMounted(() => {
@@ -246,6 +261,34 @@ $border-radius: 12px;
   &-leave-to {
     opacity: 0;
     transform: translateX(v-bind('slideDirection === "right" ? "-50px" : "50px"'));
+  }
+}
+
+.indicators {
+  display: none;
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 8px;
+  
+  @media (max-width: $mobile-breakpoint) {
+    display: flex;
+  }
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba($button-bg, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color $transition-duration;
+  
+  &.active {
+    background: $button-bg;
   }
 }
 </style>

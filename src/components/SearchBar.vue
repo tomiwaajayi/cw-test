@@ -39,9 +39,7 @@ const emit = defineEmits<{
 const query = ref('');
 
 const searchPhotos = () => {
-  if (query.value.length > 0) {
-    emit('search', query.value);
-  }
+  emit('search', query.value);
 };
 
 const debouncedSearch = debounce(() => {
@@ -50,9 +48,7 @@ const debouncedSearch = debounce(() => {
 
 const handleEnterSearch = () => {
   debouncedSearch.cancel();
-  if (query.value.length > 0) {
-    searchPhotos();
-  }
+  searchPhotos();
 };
 
 onBeforeUnmount(() => {
