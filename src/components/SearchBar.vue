@@ -86,12 +86,14 @@ onBeforeUnmount(() => {
     padding: 10px 10px 10px 40px;
     border: 0;
     border-radius: 4px;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
     outline: none;
     background-color: #f5f5f5;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s;
+    
+    &::placeholder {
+      color: #131313;
+      font-weight: 400;
+    }
     
     &:focus {
       background-color: #fff;

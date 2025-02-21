@@ -6,7 +6,7 @@
         Searching for <span class="gray-text">"{{ currentSearchQuery }}"</span>
       </p>
       <p v-else-if="currentSearchQuery && photos.length > 0" class="search-status blue-text">
-        Showing results for <span class="gray-text">"{{ currentSearchQuery }}"</span>
+        Search results for <span class="gray-text">"{{ currentSearchQuery }}"</span>
       </p>
       <p v-else-if="currentSearchQuery && photos.length === 0" class="search-status blue-text">
         No results found for <span class="gray-text">"{{ currentSearchQuery }}"</span>

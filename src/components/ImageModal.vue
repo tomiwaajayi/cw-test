@@ -1,38 +1,34 @@
 <template>
   <Transition name="fade">
-    <div class="modal" v-if="isVisible" @click.self="closeModal">
-      <button class="nav-button prev" @click.stop="showPrevious">&lt;</button>
-      <button class="nav-button next" @click.stop="showNext">&gt;</button>
+    <div class="modal" 
+      v-if="isVisible" 
+      @click.self="closeModal"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+    >
+      <ModalNavButton direction="prev" @click="showPrevious" />
+      <ModalNavButton direction="next" @click="showNext" />
       
       <div class="image-container">
         <Transition name="slide" mode="out-in">
-          <div :key="photo.id" class="image-wrapper">
-            <img 
-              class="modal-content" 
-              :src="photo.urls.regular" 
-              :alt="photo.alt_description || 'Unsplash Image'"
-              loading="lazy"
+          <div :key="photo.id">
+            <ModalImage 
+              :photo="photo"
               @load="handleImageLoad"
-              @touchstart.prevent="handleTouchStart"
-              @touchmove.prevent="handleTouchMove"
-              @touchend.prevent="handleTouchEnd"
             />
-            <div class="caption" :key="photo.id" v-if="!isLoading">
-              <p class="md-text blue-text">{{ photo.user.name ?? 'Unknown' }}</p>
-              <p class="sm-text gray-text">{{ photo.user.location ?? 'Unknown' }}</p>
-            </div>
+            <ModalCaption 
+              v-if="!isLoading"
+              :photo="photo"
+            />
           </div>
         </Transition>
-        <!--  nav indicators for mobile -->
-        <div class="indicators">
-          <button 
-            v-for="(_, index) in photos" 
-            :key="index"
-            class="indicator"
-            :class="{ active: index === currentIndex }"
-            @click.stop="goToSlide(index)"
-          ></button>
-        </div>
+        
+        <ModalIndicators
+          :total="photos.length"
+          :current-index="currentIndex"
+          @select="goToSlide"
+        />
       </div>
     </div>
   </Transition>
@@ -41,6 +37,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import type { Photo } from '../types/unsplash';
+import ModalNavButton from './modal/ModalNavButton.vue';
+import ModalImage from './modal/ModalImage.vue';
+import ModalCaption from './modal/ModalCaption.vue';
+import ModalIndicators from './modal/ModalIndicators.vue';
 
 const props = defineProps<{
   photo: Photo;
@@ -149,146 +149,49 @@ watch(() => props.photo, () => {
 </script>
 
 <style scoped lang="scss">
-
-$modal-bg: rgba(0, 0, 0, 0.8);
-$button-bg: #fff;
-$mobile-breakpoint: 600px;
-$transition-duration: 0.3s;
-$border-radius: 12px;
-
 .modal {
   position: fixed;
+  inset: 0;
   z-index: 1000;
-  inset: 0; 
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  background-color: $modal-bg;
+  background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
 
-.image {
-  &-container {
-    position: relative;
-    max-width: 70vw;
-    max-height: 70vh;
-    
-    @media (max-width: $mobile-breakpoint) {
-      max-width: 85vw;
-    }
-  }
-
-  &-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.modal-content {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
+.image-container {
+  position: relative;
+  max-width: 70vw;
   max-height: 70vh;
-  object-fit: contain;
-  border-radius: $border-radius;
-}
-
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 50px;
-  width: 50px;
-  background: $button-bg;
-  border: none;
-  border-radius: 50%;
-  color: #000;
-  cursor: pointer;
-  transition: background-color $transition-duration;
   
-  @media (max-width: $mobile-breakpoint) {
-    display: none;
-  }
-  
-  &:hover {
-    background: rgba($button-bg, 0.8);
-  }
-  
-  &.prev { left: 20px; }
-  &.next { right: 20px; }
-}
-
-.caption {
-  position: absolute;
-  inset: auto 0 0 0; 
-  padding: 20px;
-  background: $button-bg;
-  border-bottom-left-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
-  text-align: left;
-
-  @media (max-width: $mobile-breakpoint) {
-    padding: 10px 20px;
+  @media (max-width: 600px) {
+    max-width: 85vw;
   }
 }
 
-/* Transitions */
-.fade {
-  &-enter-active,
-  &-leave-active {
-    transition: opacity $transition-duration ease;
-  }
-
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
 }
 
-.slide {
-  &-enter-active,
-  &-leave-active {
-    transition: transform $transition-duration ease, opacity $transition-duration ease;
-  }
-
-  &-enter-from {
-    opacity: 0;
-    transform: translateX(v-bind('slideDirection === "right" ? "50px" : "-50px"'));
-  }
-
-  &-leave-to {
-    opacity: 0;
-    transform: translateX(v-bind('slideDirection === "right" ? "-50px" : "50px"'));
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
-.indicators {
-  display: none;
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  gap: 8px;
-  
-  @media (max-width: $mobile-breakpoint) {
-    display: flex;
-  }
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s, opacity 0.3s;
 }
 
-.indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba($button-bg, 0.5);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: background-color $transition-duration;
-  
-  &.active {
-    background: $button-bg;
-  }
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(v-bind('slideDirection === "right" ? "50px" : "-50px"'));
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(v-bind('slideDirection === "right" ? "-50px" : "50px"'));
 }
 </style>

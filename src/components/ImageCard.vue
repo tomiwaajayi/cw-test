@@ -3,8 +3,8 @@
     <div v-if="isLoading" class="loading-placeholder" />
     
     <div class="image-overlay" v-show="!isLoading">
-      <p class="image-creator">{{ photo.user.name ?? 'Unknown' }}</p>
-      <p class="image-location">{{ photo.user.location ?? 'Unknown' }}</p>
+      <p class="md-text">{{ photo.user.name ?? 'Unknown' }}</p>
+      <p class="sm-text">{{ photo.user.location ?? 'Unknown' }}</p>
     </div>
     
     <img 
