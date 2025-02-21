@@ -30,6 +30,8 @@ const onShowModal = (photo: Photo): void => {
 </script>
 
 <style scoped lang="scss">
+@import '../styles/_variables.scss';
+
 .photo-grid {
   max-width: 800px;
   margin: -60px auto 0;
@@ -37,11 +39,11 @@ const onShowModal = (photo: Photo): void => {
   columns: 3;
   column-gap: 20px;
 
-  @media (max-width: 768px) {
+  @include responsive(tablet) {
     columns: 2;
   }
 
-  @media (max-width: 480px) {
+  @include responsive(mobile) {
     columns: 1;
   }
 }

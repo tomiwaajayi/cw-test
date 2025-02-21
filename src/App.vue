@@ -46,6 +46,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+@import './styles/_variables.scss';
+
 .header {
   background-color: #DCE3EB;
   height: 250px;
@@ -63,11 +65,11 @@ onMounted(() => {
   font-weight: 500;
   text-align: center;
 
-  @media (max-width: 768px) {
+  @include responsive(tablet) {
     font-size: 20px;
   }
 
-  @media (max-width: 480px) {
+  @include responsive(mobile) {
     font-size: 16px;
   }
 }

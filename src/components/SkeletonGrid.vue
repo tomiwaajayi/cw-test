@@ -31,13 +31,7 @@ const getRandomHeight = () => {
 </script>
 
 <style scoped lang="scss">
-@mixin responsive($breakpoint) {
-  @if $breakpoint == tablet {
-    @media (max-width: 768px) { @content; }
-  } @else if $breakpoint == mobile {
-    @media (max-width: 480px) { @content; }
-  }
-}
+@import '../styles/_variables.scss';
 
 .skeleton-grid {
   max-width: 800px;

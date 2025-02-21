@@ -57,12 +57,14 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
+@import '../styles/_variables.scss';
+
 .search-bar {
   width: 100%;
   max-width: 1200px;
   padding: 0 80px;
 
-  @media (max-width: 768px) {
+  @include responsive(tablet) {
     padding: 0 20px;
   }
 }
