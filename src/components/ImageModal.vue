@@ -213,6 +213,10 @@ $border-radius: 12px;
   border-bottom-left-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
   text-align: left;
+
+  @media (max-width: $mobile-breakpoint) {
+    padding: 10px 20px;
+  }
 }
 
 /* Transitions */
